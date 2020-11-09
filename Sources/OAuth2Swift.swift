@@ -94,7 +94,7 @@ open class OAuth2Swift: OAuthSwift {
             }
             OAuthSwift.log?.trace("Parsed url parameters: \(responseParameters)")
 
-            if let accessToken = responseParameters["access_token"] {
+            if let accessToken = responseParameters["id_token"] {
                 this.client.credential.oauthToken = accessToken.safeStringByRemovingPercentEncoding
                 if let expiresIn: String = responseParameters["expires_in"], let offset = Double(expiresIn) {
                     this.client.credential.oauthTokenExpiresAt = Date(timeInterval: offset, since: Date())
@@ -164,7 +164,7 @@ open class OAuth2Swift: OAuthSwift {
                     otherErrorBlock()
                 }
             } else {
-                let message = "No access_token, no code and no error provided by server"
+                let message = "No id_token, no code and no error provided by server"
                 OAuthSwift.log?.error("Authorization failed with: \(message)")
                 completion(.failure(.serverError(message: message)))
             }
